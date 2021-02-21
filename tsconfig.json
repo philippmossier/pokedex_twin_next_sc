@@ -29,8 +29,9 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"  
+    "**/*.tsx" 
   ],
+  "files": ["twin.d.ts"],
   "exclude": [
     "node_modules"
   ]
