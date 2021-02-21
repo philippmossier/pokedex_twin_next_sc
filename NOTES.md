@@ -32,3 +32,5 @@ a minimum of 3 meaningful Unit Tests
 <https://img.pokemondb.net/artwork/large/calyrex.jpg>
 
 <https://assets.pokemon.com/assets/cms2/img/pokedex/full/898.png>
+
+`npm install -D eslint prettier eslint-config-prettier@7.2.0 eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/eslint-plugin @typescript-eslint/parser`

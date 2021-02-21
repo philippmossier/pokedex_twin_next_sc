@@ -1,16 +1,15 @@
 import tw from 'twin.macro';
 import List from '../components/List';
 
-const Wrapper = tw.div`flex flex-col items-center justify-center h-full bg-gradient-to-b from-indigo-100 to-indigo-600`
-
+const Wrapper = tw.div`flex flex-col items-center justify-center h-full bg-gradient-to-b from-indigo-100 to-indigo-600`;
 
 const App = () => (
-  <List/>
-/* <Wrapper> */
-// </Wrapper>
-)
+  <List />
+  /* <Wrapper> */
+  // </Wrapper>
+);
 
-export default App
+export default App;
 
 // import tw, { styled } from 'twin.macro';
 // import { ButtonExample, LogoExample } from '../components/example'
@@ -40,4 +39,3 @@ export default App
 // )
 
 // export default App
-
