@@ -4,26 +4,16 @@ import tw from 'twin.macro';
 import NextLink from 'next/link';
 import { Pokemon, PokemonResponse } from '../types/PokemonResponse';
 import PokeCard from './PokeCard';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import Navbar from './Navbar';
 
 const NextBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
 const PreviousBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
 
-// type FormData = {
-//   pokemonName: string;
-// };
-
 const List: FC = () => {
   const [url, setUrl] = useState<string>('https://pokeapi.co/api/v2/pokemon?limit=18&offset=0');
   const { state, error, data } = useApi<PokemonResponse>(url);
   const router = useRouter();
-
-  // const { register, handleSubmit } = useForm<FormData>();
-  // const onSubmit = handleSubmit(({ pokemonName }) => {
-  //   router.push(`/details/${pokemonName.toLowerCase()}`);
-  // });
 
   const getIdFromUrl = (pokemonUrl: string) => pokemonUrl.split('/')[6];
 
@@ -65,6 +55,3 @@ const List: FC = () => {
 };
 
 export default List;
-{
-  /* <div key={p.name}>{p.name}</div> */
-}

@@ -2,19 +2,19 @@
 // on load. Without it, the styles are only added once
 // react loads on the frontend
 
-import Document from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import Document from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const sheet = new ServerStyleSheet()
-    const originalRenderPage = ctx.renderPage
+    const sheet = new ServerStyleSheet();
+    const originalRenderPage = ctx.renderPage;
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
-        })
-      const initialProps = await Document.getInitialProps(ctx)
+          enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+        });
+      const initialProps = await Document.getInitialProps(ctx);
 
       return {
         ...initialProps,
@@ -24,9 +24,9 @@ export default class MyDocument extends Document {
             {sheet.getStyleElement()}
           </>
         ),
-      }
+      };
     } finally {
-      sheet.seal()
+      sheet.seal();
     }
   }
 }
