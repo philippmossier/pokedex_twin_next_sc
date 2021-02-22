@@ -6,7 +6,7 @@ type Data<T> = {
   data: T;
 };
 
-export const useApi = <T>(url: string) => {
+export const useApi = <T>(url: string): Data<T> => {
   const [data, setData] = useState<Data<T>>({
     state: 'LOADING',
     error: '',
@@ -29,7 +29,7 @@ export const useApi = <T>(url: string) => {
       .catch(() => {
         setPartData({
           state: 'ERROR',
-          error: 'fetch failed',
+          error: 'Not found',
         });
       });
   }, [url]);

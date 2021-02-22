@@ -21,8 +21,8 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    // '@typescript-eslint/explicit-module-boundary-types': 'off',
     // '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     'react/react-in-jsx-scope': 'off', // only for react 17 and above
     'react/prop-types': 'off', // only for react 17 and above
 
@@ -32,7 +32,7 @@ module.exports = {
       {
         endOfLine: 'auto',
         singleQuote: true,
-        printWidth: 100,
+        printWidth: 250,
         semi: true,
         trailingComma: 'all',
         tabWidth: 2,
