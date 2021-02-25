@@ -4,9 +4,9 @@
  * https://github.com/ben-rogerson/twin.macro/issues/277#issuecomment-754240911
  */
 
-import React from 'react'
-import { GlobalStyles } from 'twin.macro'
+import React from 'react';
+import { GlobalStyles } from 'twin.macro';
 
 export default function GlobalStylesComponent() {
-  return <GlobalStyles />
+  return <GlobalStyles />;
 }

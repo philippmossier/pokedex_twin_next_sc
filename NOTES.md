@@ -11,6 +11,7 @@ order-number
 stats
 possible evolutions
 moves
+
 Technical constraints:
 
 JavaScript Framework: Angular, React or Vue

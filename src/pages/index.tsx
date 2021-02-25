@@ -1,41 +1,50 @@
-// import tw from 'twin.macro';
-import List from '../components/List';
+import React, { FC, useState } from 'react';
+import 'twin.macro';
+import { Pokemon, PokemonResponse } from '../types/PokemonResponse';
+import Navbar from '../components/Navbar';
+import ButtonExample from '../components/example/ButtonExample';
+import Pokecard from '../components/Pokecard';
+import Link from '../components/Link';
+import DataLoader from '../components/DataLoader';
+import { getIdFromUrl } from '../utils/getIdFromUrl';
 
-// const Wrapper = tw.div`flex flex-col items-center justify-center h-full bg-gradient-to-b from-indigo-100 to-indigo-600`;
+// const NextBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
+// const PreviousBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
 
-const App = () => (
-  <>
-    <List />
-  </>
-);
+const Index: FC = () => {
+  const [url, setUrl] = useState<string>('https://pokeapi.co/api/v2/pokemon?limit=28&offset=0');
 
-export default App;
+  const getList = async () => {
+    const pokemon = (await fetch(url).then((response) => response.json() as unknown)) as PokemonResponse;
+    return pokemon;
+  };
 
-// import tw, { styled } from 'twin.macro';
-// import { ButtonExample, LogoExample } from '../components/example'
+  return (
+    <DataLoader fetchData={() => getList()} dependency={[url]}>
+      {(data) => {
+        return (
+          <>
+            <Navbar />
+            <ul tw="flex flex-wrap justify-center max-w-6xl mx-auto gap-6 pt-4 px-2">
+              {data.results.map((p: Pokemon) => (
+                <Link passHref key={p.name} href="/details/[id]" as={`/details/${getIdFromUrl(p.url)}`}>
+                  <Pokecard key={p.name} name={p.name} id={getIdFromUrl(p.url)} />
+                </Link>
+              ))}
+            </ul>
+            <div tw="flex flex-row justify-center items-center mr-auto gap-4 pt-4">
+              <ButtonExample isPrimary disabled={!data.previous} onClick={() => setUrl(data.previous || url)}>
+                previous
+              </ButtonExample>
+              <ButtonExample isPrimary disabled={!data.next} onClick={() => setUrl(data.next || url)}>
+                next
+              </ButtonExample>
+            </div>
+          </>
+        );
+      }}
+    </DataLoader>
+  );
+};
 
-// const ButtonEasy = tw.button`bg-yellow-400 text-black rounded-md py-2 px-4`;
-// const ButtonAdvanced = styled.button(()=> [
-//   tw`items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white `,
-//   tw`bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`,
-// ]);
-
-// const App = () => (
-//   <div
-//     css={[
-//       tw`flex flex-col items-center justify-center h-screen`,
-//       tw`bg-gradient-to-b from-electric to-ribbon`,
-//     ]}
-//   >
-//     <div tw="flex flex-col justify-center h-full space-y-5">
-//     <ButtonExample isPrimary>Button1</ButtonExample>
-//       <ButtonExample isSecondary>Button2</ButtonExample>
-//       <ButtonExample isSmall>Button3</ButtonExample>
-//       <ButtonEasy>ButtonEasy</ButtonEasy>
-//       <ButtonAdvanced>ButtonAdvanced</ButtonAdvanced>
-//     </div>
-//     <LogoExample />
-//   </div>
-// )
-
-// export default App
+export default Index;
