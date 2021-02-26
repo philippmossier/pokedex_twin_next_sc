@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import 'twin.macro';
 import { capFirstLetter } from '../utils/capFirstLetter';
 import { formatInto3Digits } from '../utils/formatInto3Digits';

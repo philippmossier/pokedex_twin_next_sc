@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../../components/Navbar';
-import 'twin.macro';
 import { PokemonDetailsResponse } from '../../types/PokemonDetailsResponse';
 import { PokemonSpeciesResponse } from '../../types/PokemonSpeciesResponse';
 import { EvolutionChainResponse } from '../../types/EvolutionChainResponse';
@@ -8,6 +7,37 @@ import { capFirstLetter } from '../../utils/capFirstLetter';
 import { formatInto3Digits } from '../../utils/formatInto3Digits';
 import DataLoader from '../../components/DataLoader';
 import { useRouter } from 'next/router';
+import tw, { css, styled } from 'twin.macro';
+
+const getBarColors = (index: number): string => {
+  type KeyValuePair = {
+    [key: string]: string;
+  };
+  const cols: KeyValuePair = {
+    '0': '#90EE90',
+    '1': '#CD5C5C',
+    '2': '#808080',
+    '3': '#DAA520',
+    '4': '#9370DB',
+    '5': '#48D1CC',
+  };
+  return cols[index];
+};
+
+type StatsBarProps = {
+  index: number;
+  barWidth: number;
+};
+
+const StatsBar = styled.div(({ barWidth, index }: StatsBarProps) => [
+  // common styles
+  tw`text-xs leading-none py-1 text-center text-white`,
+  // non boolean props need to be handled with css tag
+  css`
+    width: ${barWidth}%;
+    background-color: ${getBarColors(index)};
+  `,
+]);
 
 const Details: React.FC = () => {
   const { query, isReady } = useRouter();
@@ -33,61 +63,91 @@ const Details: React.FC = () => {
       <DataLoader fetchData={() => getDetailsSpeciesEvolution()} dependency={[query.id]}>
         {(data) => {
           console.log('data', data);
-
+          const collapseMoves = false;
           return (
             <>
               <Navbar />
-              <div tw="flex flex-col items-center">
-                <div tw="text-3xl flex items-center flex-row content-center">
+
+              <div tw="flex flex-col items-center max-w-6xl justify-center m-auto border-2">
+                <div tw="text-3xl flex items-center flex-row content-center border-2">
                   <h1 tw="pb-1">{capFirstLetter(data.details.name)}</h1>
                   <span tw="text-gray-400 ml-2">{`#${data.details.id}`}</span>
                 </div>
 
-                <div tw="w-24 h-24 text-center">
-                  <img tw="mt-1 max-w-full bg-transparent" src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${formatInto3Digits(data.details.id)}.png`} />
-                </div>
+                <div tw="border-2">
+                  <div tw="m-auto w-60 h-60 text-center border-2">
+                    <img tw="mt-1 max-w-full bg-transparent" src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${formatInto3Digits(data.details.id)}.png`} />
+                  </div>
 
-                <div>
-                  <h2>Type</h2>
-                  {data.details.types.map((type) => (
-                    <span tw="pl-2" key={type.type.name}>
-                      {type.type.name}
-                    </span>
-                  ))}
-                </div>
+                  <table tw="border-2">
+                    <h1 tw="text-2xl font-bold">Data:</h1>
+                    <tbody tw="text-left">
+                      <tr tw="">
+                        <th>Abilities</th>
+                        {data.details.abilities.map((ab) => (
+                          <td tw="px-3" key={ab.ability.name}>
+                            {ab.ability.name}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <th>Type</th>
+                        {data.details.types.map((ty) => (
+                          <td tw="px-3" key={ty.type.name}>
+                            {ty.type.name}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <th>Possible Evolutions</th>
+                        {data.evolution.chain.evolves_to.length && data.details.name === data.evolution.chain.species.name ? (
+                          <>
+                            <td tw="px-3">{data.evolution.chain.evolves_to[0].species.name}</td>
+                            <td tw="px-3">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</td>
+                          </>
+                        ) : null}
+                        {data.evolution.chain.evolves_to.length && data.details.name === data.evolution.chain.evolves_to[0].species.name ? (
+                          <>
+                            <td tw="px-3">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</td>
+                          </>
+                        ) : null}
+                      </tr>
+                    </tbody>
+                  </table>
 
-                <div>
-                  <h2>Stats</h2>
-                  {data.details.stats.map((stat) => (
-                    <div key={stat.stat.name}>
-                      <span tw="pl-2">{stat.stat.name}</span>
-                      <span tw="pl-2">{stat.base_stat}</span>
-                    </div>
-                  ))}
-                </div>
+                  <div tw="border-2">
+                    <h1 tw="text-2xl font-bold">Stats:</h1>
+                    {data.details.stats.map((st, index) => (
+                      <div tw="text-left" key={st.stat.name}>
+                        <div>{st.stat.name}</div>
 
-                <div>
-                  <h2>Evolutions:</h2>
-                  {data.evolution.chain.evolves_to.length && data.details.name === data.evolution.chain.species.name ? (
-                    <div key={data.evolution.id}>
-                      <span tw="pl-2">{data.evolution.chain.evolves_to[0].species.name}</span>
-                      <span tw="pl-2">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</span>
-                    </div>
-                  ) : null}
-                  {data.evolution.chain.evolves_to.length && data.details.name === data.evolution.chain.evolves_to[0].species.name ? (
-                    <div key={data.evolution.id}>
-                      <span tw="pl-2">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</span>
-                    </div>
-                  ) : null}
-                </div>
+                        <StatsBar barWidth={st.base_stat / 2} index={index}>
+                          {st.base_stat}
+                        </StatsBar>
+                      </div>
+                    ))}
+                  </div>
+                  {/* <table tw="bg-green-200">
+                    <h1 tw="text-2xl font-bold">Stats:</h1>
+                    {data.details.stats.map((st) => (
+                      <tr tw="text-left" key={st.stat.name}>
+                        <th>{st.stat.name}</th>
+                        <td>{st.base_stat}</td>
+                      </tr>
+                    ))}
+                  </table> */}
 
-                <div>
-                  <h2>Moves</h2>
-                  {data.details.moves.map((move) => (
-                    <div key={move.move.name}>
-                      <span tw="pl-2">{move.move.name}</span>
+                  <div tw="border-4">
+                    <h1 tw="text-2xl font-bold">Moves:</h1>
+                    <div tw="flex flex-wrap">
+                      {!collapseMoves &&
+                        data.details.moves.map((mo) => (
+                          <p tw="px-2 border-solid border-2" key={mo.move.name}>
+                            {mo.move.name}
+                          </p>
+                        ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             </>

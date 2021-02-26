@@ -5,12 +5,19 @@ interface ButtonProps {
   isSecondary?: boolean;
   isSmall?: boolean;
   disabled: boolean;
+  boxWidth?: number;
 }
 
-const ButtonExmaple = styled.button(({ isPrimary, isSecondary, isSmall, disabled }: ButtonProps) => [
+const ButtonExample = styled.button(({ isPrimary, isSecondary, isSmall, disabled, boxWidth }: ButtonProps) => [
   // The common button styles
-  tw`text-lg px-8 py-2 rounded-lg focus:outline-none`,
+  tw`text-lg px-4 py-2 rounded-lg focus:outline-none`,
   tw`transform transition-transform duration-75`,
+
+  // non boolean props need to be handled with css
+  boxWidth &&
+    css`
+      width: ${boxWidth}rem;
+    `,
 
   // Use the variant grouping feature to add variants to multiple classes
   !disabled && tw`hocus:(scale-105 text-blue-300)`,
@@ -36,7 +43,7 @@ const ButtonExmaple = styled.button(({ isPrimary, isSecondary, isSmall, disabled
   `,
 ]);
 
-export default ButtonExmaple;
+export default ButtonExample;
 
 // ---------------------- Can be used like this: -----------------------------
 
