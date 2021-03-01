@@ -1,27 +1,28 @@
 import React, { FC, useState } from 'react';
 import 'twin.macro';
-import { Pokemon, PokemonResponse } from '../types/PokemonResponse';
+import { Pokemon } from '../types/PokemonResponse';
 import Navbar from '../components/Navbar';
-import ButtonExample from '../components/example/ButtonExample';
+import PaginationButton from '../components/PaginationButton';
 import Pokecard from '../components/Pokecard';
 import Link from '../components/Link';
 import DataLoader from '../components/DataLoader';
 import { getIdFromUrl } from '../utils/getIdFromUrl';
+import { handleNextPage, handlePrevPage } from '../utils/pagination';
+import { getList } from '../repository/getList';
+import { page1 } from '../repository/constants';
 
-// const NextBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
-// const PreviousBtn = tw.button`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
+// const NextBtn = tw.PaginationButton`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
+// const PreviousBtn = tw.PaginationButton`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
 
 const Index: FC = () => {
-  const [url, setUrl] = useState<string>('https://pokeapi.co/api/v2/pokemon?limit=28&offset=0');
-
-  const getList = async () => {
-    const pokemon = (await fetch(url).then((response) => response.json() as unknown)) as PokemonResponse;
-    return pokemon;
-  };
+  const [url, setUrl] = useState(page1);
 
   return (
-    <DataLoader fetchData={() => getList()} dependency={[url]}>
+    <DataLoader fetchData={() => getList(url)} dependency={[url]}>
       {(data) => {
+        const firstPage = data.previous === null;
+        const lastPage = data.next.includes('offset=898');
+
         return (
           <>
             <Navbar />
@@ -33,12 +34,12 @@ const Index: FC = () => {
               ))}
             </ul>
             <div tw="flex flex-row justify-center items-center mr-auto gap-4 pt-4">
-              <ButtonExample isPrimary disabled={!data.previous} onClick={() => setUrl(data.previous || url)}>
+              <PaginationButton disabled={firstPage} onClick={() => setUrl(handlePrevPage(data.previous))}>
                 previous
-              </ButtonExample>
-              <ButtonExample isPrimary disabled={!data.next} onClick={() => setUrl(data.next || url)}>
+              </PaginationButton>
+              <PaginationButton disabled={lastPage} onClick={() => setUrl(handleNextPage(data.next))}>
                 next
-              </ButtonExample>
+              </PaginationButton>
             </div>
           </>
         );
