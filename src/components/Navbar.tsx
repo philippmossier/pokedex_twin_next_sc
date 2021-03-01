@@ -1,20 +1,9 @@
-import { useForm } from 'react-hook-form';
 import 'twin.macro';
 import HomeButton from './HomeButton';
-import SearchIcon from './SearchIcon';
-import { useRouter } from 'next/router';
-
-type FormData = {
-  pokemonName: string;
-};
+import SearchForm from './SearchForm';
+import { SearchSvg } from './Svgs';
 
 const Navbar = () => {
-  const { register, handleSubmit } = useForm<FormData>();
-  const router = useRouter();
-
-  const onSubmit = handleSubmit(({ pokemonName }) => {
-    router.push(`/details/${pokemonName.toLowerCase()}`);
-  });
   return (
     <nav tw="bg-gray-800">
       <div tw="max-w-6xl mx-auto">
@@ -28,18 +17,9 @@ const Navbar = () => {
               </label>
               <div tw="relative">
                 <div tw="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <SearchIcon />
+                  <SearchSvg />
                 </div>
-                <form onSubmit={onSubmit}>
-                  <input
-                    tw="block w-full pl-10 pr-2 py-2 border border-transparent rounded-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-white focus:ring-white focus:text-gray-900 sm:text-sm"
-                    required
-                    name="pokemonName"
-                    ref={register}
-                    placeholder="Search by Name or Id"
-                    title="dummySearch"
-                  />
-                </form>
+                <SearchForm isNavbar />
               </div>
             </div>
           </div>

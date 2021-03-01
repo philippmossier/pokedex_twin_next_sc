@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactNode, SetStateAction } from 'react';
-import { ErrorIndicator } from './ErrorIndicator';
-import { LoadingIndicator } from './LoadingIndicator';
+import ErrorIndicator from './ErrorIndicator';
+import LoadingIndicator from './LoadingIndicator';
 
 type Props<T> = {
   fetchData: () => Promise<T>;

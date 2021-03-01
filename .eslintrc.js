@@ -32,7 +32,7 @@ module.exports = {
       {
         endOfLine: 'auto',
         singleQuote: true,
-        printWidth: 250,
+        printWidth: 120,
         semi: true,
         trailingComma: 'all',
         tabWidth: 2,

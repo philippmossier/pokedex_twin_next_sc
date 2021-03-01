@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import GlobalStyles from '../components/GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 
 const App = ({ Component, pageProps }: AppProps) => (
   <div>

@@ -1,20 +1,17 @@
-import React, { FC, useState } from 'react';
-import 'twin.macro';
-import { Pokemon } from '../types/PokemonResponse';
+import { useState } from 'react';
+import { Pokemon } from '../repository/types/PokemonResponse';
 import Navbar from '../components/Navbar';
 import PaginationButton from '../components/PaginationButton';
-import Pokecard from '../components/Pokecard';
+import PokemonListItem from '../components/PokemonListItem';
 import Link from '../components/Link';
 import DataLoader from '../components/DataLoader';
 import { getIdFromUrl } from '../utils/getIdFromUrl';
 import { handleNextPage, handlePrevPage } from '../utils/pagination';
 import { getList } from '../repository/getList';
-import { page1 } from '../repository/constants';
+import { page1 } from '../repository/urls';
+import { ButtonContainer, PokemonList } from '../styles/IndexPage.styles';
 
-// const NextBtn = tw.PaginationButton`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
-// const PreviousBtn = tw.PaginationButton`bg-red-400 text-black rounded-md py-2 px-4 mt-4`;
-
-const Index: FC = () => {
+const Index = () => {
   const [url, setUrl] = useState(page1);
 
   return (
@@ -26,21 +23,23 @@ const Index: FC = () => {
         return (
           <>
             <Navbar />
-            <ul tw="flex flex-wrap justify-center max-w-6xl mx-auto gap-6 pt-4 px-2">
+
+            <PokemonList>
               {data.results.map((p: Pokemon) => (
-                <Link title="cardLink" passHref key={p.name} href="/details/[id]" as={`/details/${getIdFromUrl(p.url)}`}>
-                  <Pokecard key={p.name} name={p.name} id={getIdFromUrl(p.url)} />
+                <Link passHref key={p.name} href="/details/[id]" as={`/details/${getIdFromUrl(p.url)}`}>
+                  <PokemonListItem key={p.name} name={p.name} id={getIdFromUrl(p.url)} />
                 </Link>
               ))}
-            </ul>
-            <div tw="flex flex-row justify-center items-center mr-auto gap-4 pt-4">
+            </PokemonList>
+
+            <ButtonContainer>
               <PaginationButton disabled={firstPage} onClick={() => setUrl(handlePrevPage(data.previous))}>
                 previous
               </PaginationButton>
               <PaginationButton disabled={lastPage} onClick={() => setUrl(handleNextPage(data.next))}>
                 next
               </PaginationButton>
-            </div>
+            </ButtonContainer>
           </>
         );
       }}
