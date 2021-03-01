@@ -27,7 +27,7 @@ const Index: FC = () => {
             <Navbar />
             <ul tw="flex flex-wrap justify-center max-w-6xl mx-auto gap-6 pt-4 px-2">
               {data.results.map((p: Pokemon) => (
-                <Link passHref key={p.name} href="/details/[id]" as={`/details/${getIdFromUrl(p.url)}`}>
+                <Link title="cardLink" passHref key={p.name} href="/details/[id]" as={`/details/${getIdFromUrl(p.url)}`}>
                   <Pokecard key={p.name} name={p.name} id={getIdFromUrl(p.url)} />
                 </Link>
               ))}

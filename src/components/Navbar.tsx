@@ -37,6 +37,7 @@ const Navbar = () => {
                     name="pokemonName"
                     ref={register}
                     placeholder="Search by Name or Id"
+                    title="dummySearch"
                   />
                 </form>
               </div>
