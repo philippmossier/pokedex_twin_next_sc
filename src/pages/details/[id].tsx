@@ -35,87 +35,84 @@ const Details = () => {
   if (isReady) {
     return (
       <DataLoader fetchData={() => getListItem(query.id)} dependency={[query.id]}>
-        {(data) => {
-          console.log('data', data);
-          return (
-            <>
-              <Navbar />
+        {(data) => (
+          <>
+            <Navbar />
 
-              <FlexContainer>
-                <main>
-                  <Header>
-                    {capFirstLetter(data.details.name)}
-                    <Number>{`#${data.details.id}`}</Number>
-                  </Header>
+            <FlexContainer>
+              <main>
+                <Header>
+                  {capFirstLetter(data.details.name)}
+                  <Number>{`#${data.details.id}`}</Number>
+                </Header>
 
-                  <ImageContainer>
-                    <Image src={`${imgUrl}/${formatInto3Digits(data.details.id)}.png`} />
-                  </ImageContainer>
+                <ImageContainer>
+                  <Image src={`${imgUrl}/${formatInto3Digits(data.details.id)}.png`} />
+                </ImageContainer>
 
-                  <DataTable>
-                    <TableBody>
-                      <tr>
-                        <th>Abilities</th>
-                        {data.details.abilities.map((ab) => (
-                          <td tw="px-3" key={ab.ability.name}>
-                            {ab.ability.name}
-                          </td>
-                        ))}
-                      </tr>
+                <DataTable>
+                  <TableBody>
+                    <tr>
+                      <th>Abilities</th>
+                      {data.details.abilities.map((ab) => (
+                        <td tw="px-3" key={ab.ability.name}>
+                          {ab.ability.name}
+                        </td>
+                      ))}
+                    </tr>
 
-                      <tr>
-                        <th>Type</th>
-                        {data.details.types.map((ty) => (
-                          <td tw="px-3" key={ty.type.name}>
-                            <TypeBadge color={ty.type.name}>{ty.type.name}</TypeBadge>
-                          </td>
-                        ))}
-                      </tr>
+                    <tr>
+                      <th>Type</th>
+                      {data.details.types.map((ty) => (
+                        <td tw="px-3" key={ty.type.name}>
+                          <TypeBadge color={ty.type.name}>{ty.type.name}</TypeBadge>
+                        </td>
+                      ))}
+                    </tr>
 
-                      <tr>
-                        <th>Possible Evolutions</th>
-                        {data.evolution.chain.evolves_to.length &&
-                        data.details.name === data.evolution.chain.species.name ? (
-                          <>
-                            <td tw="px-3">{data.evolution.chain.evolves_to[0].species.name}</td>
-                            <td tw="px-3">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</td>
-                          </>
-                        ) : null}
-                        {data.evolution.chain.evolves_to.length &&
-                        data.details.name === data.evolution.chain.evolves_to[0].species.name ? (
+                    <tr>
+                      <th>Possible Evolutions</th>
+                      {data.evolution.chain.evolves_to.length &&
+                      data.details.name === data.evolution.chain.species.name ? (
+                        <>
+                          <td tw="px-3">{data.evolution.chain.evolves_to[0].species.name}</td>
                           <td tw="px-3">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</td>
-                        ) : null}
-                      </tr>
-                    </TableBody>
-                  </DataTable>
+                        </>
+                      ) : null}
+                      {data.evolution.chain.evolves_to.length &&
+                      data.details.name === data.evolution.chain.evolves_to[0].species.name ? (
+                        <td tw="px-3">{data.evolution.chain.evolves_to[0].evolves_to[0]?.species.name}</td>
+                      ) : null}
+                    </tr>
+                  </TableBody>
+                </DataTable>
 
-                  <StatsSection>
-                    {data.details.stats.map((st, index) => (
-                      <Stat key={st.stat.name}>
-                        <StatLabel>{st.stat.name}</StatLabel>
+                <StatsSection>
+                  {data.details.stats.map((st, index) => (
+                    <Stat key={st.stat.name}>
+                      <StatLabel>{st.stat.name}</StatLabel>
 
-                        <StatBar barWidth={st.base_stat} index={index}>
-                          {st.base_stat}
-                        </StatBar>
-                      </Stat>
-                    ))}
-                  </StatsSection>
+                      <StatBar barWidth={st.base_stat} index={index}>
+                        {st.base_stat}
+                      </StatBar>
+                    </Stat>
+                  ))}
+                </StatsSection>
 
-                  <MovesSection>
-                    <DropDownButton onClick={() => setMovesVisible(!movesVisible)}>Moves</DropDownButton>
-                    {movesVisible && (
-                      <MoveList>
-                        {data.details.moves.map((mo) => (
-                          <MoveItem key={mo.move.name}>{mo.move.name}</MoveItem>
-                        ))}
-                      </MoveList>
-                    )}
-                  </MovesSection>
-                </main>
-              </FlexContainer>
-            </>
-          );
-        }}
+                <MovesSection>
+                  <DropDownButton onClick={() => setMovesVisible(!movesVisible)}>Moves</DropDownButton>
+                  {movesVisible && (
+                    <MoveList>
+                      {data.details.moves.map((mo) => (
+                        <MoveItem key={mo.move.name}>{mo.move.name}</MoveItem>
+                      ))}
+                    </MoveList>
+                  )}
+                </MovesSection>
+              </main>
+            </FlexContainer>
+          </>
+        )}
       </DataLoader>
     );
   }
