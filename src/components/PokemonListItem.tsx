@@ -1,5 +1,5 @@
 import React from 'react';
-import 'twin.macro';
+import tw from 'twin.macro';
 import { imgUrl } from '../repository/urls';
 import { capFirstLetter } from '../utils/capFirstLetter';
 import { formatInto3Digits } from '../utils/formatInto3Digits';
@@ -14,7 +14,11 @@ const PokemonListItem = ({ name, id, ...nextJsProps }: Props) => {
   return (
     <a
       {...nextJsProps}
-      tw="bg-blue-100 rounded-2xl shadow-md py-1 px-4 text-center focus:outline-none transform transition-transform duration-75 hocus:(scale-105 ring-2 bg-blue-200)"
+      css={[
+        tw`bg-blue-100 rounded-2xl shadow-md py-1 px-4 text-center`,
+        tw`transform transition-transform duration-75`,
+        tw`hocus:(scale-105 ring-2 bg-blue-200) focus:outline-none`,
+      ]}
     >
       <div tw="w-24 h-24 text-center">
         <img tw="mt-1 max-w-full bg-transparent" src={`${imgUrl}/${formatInto3Digits(id)}.png`} />

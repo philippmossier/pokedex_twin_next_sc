@@ -11,7 +11,9 @@ type Props = {
 };
 
 const Input = styled.input(({ isNavbar }: Props) => [
-  tw`pl-10 pr-2 py-2 border border-transparent rounded-md leading-5 text-gray-300 placeholder-gray-400 focus:(outline-none border-white ring-white bg-white text-gray-900) sm:text-sm`,
+  tw`pl-10 pr-2 py-2 border border-transparent rounded-md leading-5 text-gray-300 placeholder-gray-400 sm:text-sm`,
+  tw`focus:(outline-none border-white ring-white bg-white text-gray-900)`,
+
   !isNavbar && tw`w-72 bg-gray-800`,
   isNavbar && tw`w-full bg-gray-700`,
 ]);
