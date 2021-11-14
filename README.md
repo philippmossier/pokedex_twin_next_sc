@@ -1,3 +1,8 @@
+# Pokedex app built with react, nextjs and tailwindcss.
+
+![pokedex-app](https://user-images.githubusercontent.com/49983520/141691478-43f963b8-277e-4ea5-887f-6bdcd6c6d8e0.gif)
+
+
 # Run this app
 
 1. clone repo
